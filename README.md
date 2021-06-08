@@ -2,7 +2,9 @@
 
 ## About
 
-A simple note taking app online. Data will be stored in client's browser and it didn't store any data in server side.
+A simple note taking app online.
+
+Developed this app due to privacy concern. App contents will be stored in client's browser and it didn't store any data in server side.
 
 **[Demo](https://wordpad.netlify.app)**
 
