@@ -1,35 +1,56 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { v4 as uuidv4 } from "uuid";
 
 function App() {
-  const [textId, setTextId] = useState<string[]>([]);
+  const [textIdArr, setTextIdArr] = useState<string[]>([]);
   const [textContent, setTextContent] = useState("");
-  const [textName, setTextName] = useState("");
+  const [textId, setTextId] = useState("");
 
   useEffect(() => {
     let localKey = localStorage.getItem("TextIds");
     if (localKey == null) {
       const newId = uuidv4();
-      localStorage.setItem("TextIds", JSON.stringify(newId));
-      textId.push(newId);
+      textIdArr.push(newId);
+      localStorage.setItem("TextIds", JSON.stringify([newId]));
+      localStorage.setItem(newId, "");
+      setTextIdArr(textIdArr);
     } else {
-      let app_ids = JSON.parse(localStorage.getItem("TextIds") || "{}");
-      textId.pop();
-      textId.push(app_ids);
-      let value = localStorage.getItem(textId[0])!;
-      setTextContent(value);
-      setTextName(value.substring(0, 10).concat("..."));
-      console.log(textId[0]);
+      if (textId == "") {
+        let textIds = JSON.parse(localStorage.getItem("TextIds") || "{}");
+        setTextIdArr(textIds);
+        let value = localStorage.getItem(textIds[0])!;
+        setTextId(textIdArr[0]);
+        setTextContent(value);
+      }
     }
-  });
+  }, [textContent, textId, textContent, textIdArr]);
 
   const handleTextContent = (event: any) => {
-    console.log(textId);
+    console.log(textIdArr);
     let value = event?.target.value;
-    localStorage.setItem(textId[0], value);
+    localStorage.setItem(textId, value);
     setTextContent(value);
-    setTextName(value.substring(0, 10).concat("..."));
+  };
+
+  const handleGetContent = (event: any) => {
+    const id = event?.target.id;
+    const content = localStorage.getItem(id)!;
+    console.log(id);
+    console.log(content);
+    setTextId(id);
+    setTextContent(content);
+    console.log(textId);
+    console.log(textContent);
+  };
+
+  const handleAdd = () => {
+    const newId = uuidv4();
+    textIdArr.push(newId);
+    localStorage.setItem("TextIds", JSON.stringify(textIdArr));
+    localStorage.setItem(newId, "");
+    setTextIdArr(textIdArr);
+    console.log(textIdArr);
   };
 
   return (
@@ -38,23 +59,34 @@ function App() {
         <div className="container">
           <div className="row">
             <div className="col-25">
-              <input type="button" value="Add" />
+              <input type="button" value="Add" onClick={handleAdd} />
             </div>
-            <div className="col-75"></div>
           </div>
-          <div className="row">
+          <div className="row" id="text-content">
             <div className="col-25">
-              <div className="select-notes" id={textId[0]}>
-                <span>{textName}</span>
-              </div>
+              <ul>
+                {textIdArr.map((id: string) => {
+                  return (
+                    <li
+                      className="select-notes"
+                      key={id}
+                      id={id}
+                      onClick={handleGetContent}
+                    >
+                      {localStorage
+                        .getItem(id)!
+                        .substring(0, 10)
+                        .concat("...")}
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
             <div className="col-75">
               <textarea
-                id="fname"
-                name="firstname"
-                placeholder="Your name.."
+                placeholder="Your content.."
                 onChange={handleTextContent}
-                value={textContent}
+                value={textContent || ""}
               />
             </div>
           </div>
