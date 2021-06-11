@@ -14,7 +14,9 @@ function App() {
       textIdArr.push(newId);
       localStorage.setItem("TextIds", JSON.stringify([newId]));
       localStorage.setItem(newId, "");
+      setTextId(newId);
       setTextIdArr(textIdArr);
+      setTextContent("");
     } else {
       if (textId == "") {
         let textIds = JSON.parse(localStorage.getItem("TextIds") || "{}");
@@ -27,7 +29,6 @@ function App() {
   }, [textContent, textId, textContent, textIdArr]);
 
   const handleTextContent = (event: any) => {
-    console.log(textIdArr);
     let value = event?.target.value;
     localStorage.setItem(textId, value);
     setTextContent(value);
@@ -36,12 +37,8 @@ function App() {
   const handleGetContent = (event: any) => {
     const id = event?.target.id;
     const content = localStorage.getItem(id)!;
-    console.log(id);
-    console.log(content);
     setTextId(id);
     setTextContent(content);
-    console.log(textId);
-    console.log(textContent);
   };
 
   const handleAdd = () => {
@@ -50,7 +47,8 @@ function App() {
     localStorage.setItem("TextIds", JSON.stringify(textIdArr));
     localStorage.setItem(newId, "");
     setTextIdArr(textIdArr);
-    console.log(textIdArr);
+    setTextId(newId);
+    setTextContent("");
   };
 
   return (
