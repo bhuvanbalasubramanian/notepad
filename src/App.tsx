@@ -48,7 +48,7 @@ function App() {
     var filteredAry = textIds.filter((e: any) => e !== id);
     localStorage.setItem("TextIds", JSON.stringify(filteredAry));
     setTextIdArr(filteredAry);
-    if (filteredAry.length == 0) {
+    if (filteredAry.length === 0) {
       alert();
       const newId = uuidv4();
       textIdArr.push(newId);
