@@ -18,7 +18,7 @@ function App() {
       setTextIdArr(textIdArr);
       setTextContent("");
     } else {
-      if (textId == "") {
+      if (textId === "") {
         let textIds = JSON.parse(localStorage.getItem("TextIds") || "{}");
         setTextIdArr(textIds);
         let value = localStorage.getItem(textIds[0])!;
@@ -39,6 +39,25 @@ function App() {
     const content = localStorage.getItem(id)!;
     setTextId(id);
     setTextContent(content);
+  };
+
+  const handleDelete = (event: any) => {
+    const id = event?.target.id;
+    localStorage.removeItem(id);
+    let textIds = JSON.parse(localStorage.getItem("TextIds") || "{}");
+    var filteredAry = textIds.filter((e: any) => e !== id);
+    localStorage.setItem("TextIds", JSON.stringify(filteredAry));
+    setTextIdArr(filteredAry);
+    if (filteredAry.length == 0) {
+      alert();
+      const newId = uuidv4();
+      textIdArr.push(newId);
+      localStorage.setItem("TextIds", JSON.stringify([newId]));
+      localStorage.setItem(newId, "");
+      setTextId(newId);
+      setTextIdArr(textIdArr);
+      setTextContent("");
+    }
   };
 
   const handleAdd = () => {
@@ -71,10 +90,10 @@ function App() {
                       id={id}
                       onClick={handleGetContent}
                     >
-                      {localStorage
-                        .getItem(id)!
-                        .substring(0, 10)
-                        .concat("...")}
+                      {localStorage.getItem(id)!}
+                      <button type="button" id={id} onClick={handleDelete}>
+                        x
+                      </button>
                     </li>
                   );
                 })}
