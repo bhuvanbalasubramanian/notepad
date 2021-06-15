@@ -93,7 +93,7 @@ export function TextEditor(props: any) {
     const content: string = localStorage.getItem(id)!;
     let title = "Untitled";
     if (content) {
-      if (content.length >= 20) {
+      if (content.length >= 25) {
         title = content.substring(0, 25).concat("...");
       } else {
         title = content.substring(0, 25);

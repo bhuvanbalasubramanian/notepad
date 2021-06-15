@@ -12,7 +12,7 @@ export function Footer() {
         </a>{" "}
         &{" "}
         <a href="https://github.com/kkheman" target="_blank" rel="noreferrer">
-          Heman Babu
+          Heman Babu Kendai
         </a>
       </p>
     </footer>
