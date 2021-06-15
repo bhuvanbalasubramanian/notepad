@@ -165,7 +165,7 @@ export function TextEditor(props: any) {
                   <ListItemText
                     primary={
                       localStorage.getItem(id)
-                        ? localStorage.getItem(id)!.substring(1, 20)
+                        ? localStorage.getItem(id)!.substring(0, 20)
                         : "Untitled"
                     }
                   />
