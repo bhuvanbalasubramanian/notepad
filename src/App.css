@@ -28,6 +28,52 @@
   color: #61dafb;
 }
 
+.MuiDrawer-paper {
+  background-color: #fafafa !important;
+}
+
+.makeStyles-appBarShift-3 {
+  background-color: #2e3b55 !important;
+}
+
+.MuiTypography-noWrap {
+  color: #fff;
+}
+.MuiInputBase-input {
+  line-height: 30px !important;
+}
+
+.MuiPaper-elevation4 {
+  box-shadow: none !important;
+}
+
+.MuiAppBar-colorPrimary {
+  background-color: #2e3b55 !important;
+}
+.MuiInputBase-input,
+main,
+body {
+  background-color: #ffffff !important;
+}
+
+.github-corner svg {
+  z-index: 10000;
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 80px;
+  background: #fafafa !important;
+  text-align: center;
+  z-index: 10000;
+  border-top: 1px solid #ccc;
+}
+
+.MuiSvgIcon-fontSizeSmall {
+  color: #ccc;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
