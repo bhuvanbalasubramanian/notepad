@@ -86,3 +86,6 @@ footer {
 .MuiList-padding {
   padding-bottom: 0px !important;
 }
+textarea {
+  letter-spacing: 0.5px !important;
+}

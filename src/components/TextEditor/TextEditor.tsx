@@ -25,6 +25,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import MenuIcon from "@material-ui/icons/Menu";
 import { useStyles } from "./constants/";
 import GithubCorner from "react-github-corner";
+import { getSyntheticTrailingComments } from "typescript";
 
 export function TextEditor(props: any) {
   const classes = useStyles();
@@ -86,6 +87,18 @@ export function TextEditor(props: any) {
     setTextContent(content);
   };
 
+  const getTitle = (id: string) => {
+    const content: string = localStorage.getItem(id)!;
+    let title = "Untitled";
+    if (content) {
+      if (content.length >= 20) {
+        title = content.substring(0, 20).concat("...");
+      } else {
+        title = content.substring(0, 20);
+      }
+    }
+    return title;
+  };
   const handleDelete = (id: any) => {
     localStorage.removeItem(id);
     let textIds = JSON.parse(localStorage.getItem("TextIds") || "{}");
@@ -162,13 +175,7 @@ export function TextEditor(props: any) {
                   id={id}
                   onClick={event => handleGetContent(id)}
                 >
-                  <ListItemText
-                    primary={
-                      localStorage.getItem(id)
-                        ? localStorage.getItem(id)!.substring(0, 20)
-                        : "Untitled"
-                    }
-                  />
+                  <ListItemText primary={getTitle(id)} />
                   <ListItemSecondaryAction>
                     <Tooltip title="Delete">
                       <IconButton
