@@ -2,8 +2,8 @@ export function Footer() {
   return (
     <footer>
       <p className="privacy-note">
-        Privacy: Your data will be stored in your browser storage. We won's
-        store any data in server side.
+        Privacy: Your data will be stored in your browser's local storage and it
+        won't store any data in cloud or database.
       </p>
       <p className="text-center">
         © 2021 Developed by{" "}
