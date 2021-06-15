@@ -63,13 +63,22 @@ footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 80px;
+  height: 140px;
   background: #fafafa !important;
-  text-align: center;
   z-index: 10000;
   border-top: 1px solid #ccc;
 }
 
+.privacy-note {
+  font-size: 13px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 15px;
+}
+
+.text-center {
+  font-size: 14px;
+  text-align: center;
+}
 .MuiSvgIcon-fontSizeSmall {
   color: #ccc;
 }
