@@ -13,16 +13,18 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
+  ListItemSecondaryAction
 } from "@material-ui/core";
 import clsx from "clsx";
+
 import { useTheme } from "@material-ui/core/styles";
-import AddBoxSharpIcon from '@material-ui/icons/AddBoxSharp';
+import AddBoxSharpIcon from "@material-ui/icons/AddBoxSharp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import DeleteIcon from "@material-ui/icons/Delete";
+import CloseIcon from "@material-ui/icons/Close";
 import MenuIcon from "@material-ui/icons/Menu";
 import { useStyles } from "./constants/";
+import GithubCorner from "react-github-corner";
 
 export function TextEditor(props: any) {
   const classes = useStyles();
@@ -93,7 +95,6 @@ export function TextEditor(props: any) {
     localStorage.setItem("TextIds", JSON.stringify(filteredAry));
     setTextIdArr(filteredAry);
     if (filteredAry.length === 0) {
-      alert();
       const newId = uuidv4();
       textIdArr.push(newId);
       localStorage.setItem("TextIds", JSON.stringify([newId]));
@@ -110,9 +111,8 @@ export function TextEditor(props: any) {
         <CssBaseline />
         <AppBar
           position="fixed"
-          style={{ background: "#2E3B55" }}
           className={clsx(classes.appBar, {
-            [classes.appBarShift]: open,
+            [classes.appBarShift]: open
           })}
         >
           <Toolbar>
@@ -143,7 +143,7 @@ export function TextEditor(props: any) {
           anchor="left"
           open={open}
           classes={{
-            paper: classes.drawerPaper,
+            paper: classes.drawerPaper
           }}
         >
           <div className={classes.drawerHeader}>
@@ -155,39 +155,63 @@ export function TextEditor(props: any) {
               )}
             </IconButton>
           </div>
-          <Divider />
           <List>
-            {textIdArr.map((id, index) => (
-              <Fragment>
+            {textIdArr.map((id, i) => (
+              <div key={i}>
                 <Divider />
                 <ListItem
                   button
-                  key={id}
                   id={id}
-                  selected={selectedIndex === index}
-                  onClick={(event) => handleGetContent(id, index)}
+                  selected={selectedIndex === i}
+                  onClick={(event) => handleGetContent(id, i)}
                 >
-                  <ListItemText primary={localStorage.getItem(id)!} />
+                  <ListItemText
+                    primary={
+                      localStorage.getItem(id)
+                        ? localStorage.getItem(id)!.substring(0, 20)
+                        : "Untitled"
+                    }
+                  />
                   <ListItemSecondaryAction>
                     <Tooltip title="Delete">
                       <IconButton
                         edge="end"
                         aria-label="delete"
-                        onClick={(event) => handleDelete(id)}
+                        onClick={event => handleDelete(id)}
                       >
-                        <DeleteIcon />
+                        <CloseIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
                   </ListItemSecondaryAction>
                 </ListItem>
-              </Fragment>
+              </div>
             ))}
           </List>
           <Divider />
+          <footer>
+            <p>
+              © 2021 Developed by{" "}
+              <a
+                href="https://www.bhuvaneswaran.com"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Bhuvaneswaran Balasubramanian
+              </a>{" "}
+              &{" "}
+              <a
+                href="https://github.com/kkheman"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Heman Babu
+              </a>
+            </p>
+          </footer>
         </Drawer>
         <main
           className={clsx(classes.content, {
-            [classes.contentShift]: open,
+            [classes.contentShift]: open
           })}
         >
           <div className={classes.drawerHeader} />
@@ -202,6 +226,7 @@ export function TextEditor(props: any) {
           />
         </main>
       </div>
+      <GithubCorner href="https://github.com/bhuvanbalasubramanian/wordpad" />
     </Fragment>
   );
 }
