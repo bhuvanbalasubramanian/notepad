@@ -25,6 +25,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import MenuIcon from "@material-ui/icons/Menu";
 import { useStyles } from "./constants/";
 import GithubCorner from "react-github-corner";
+import { Footer } from "./Footer";
 
 export function TextEditor(props: any) {
   const classes = useStyles();
@@ -86,6 +87,19 @@ export function TextEditor(props: any) {
     setSelectedIndex(index);
     setTextId(id);
     setTextContent(content);
+  };
+
+  const getTitle = (id: string) => {
+    const content: string = localStorage.getItem(id)!;
+    let title = "Untitled";
+    if (content) {
+      if (content.length >= 25) {
+        title = content.substring(0, 25).concat("...");
+      } else {
+        title = content.substring(0, 25);
+      }
+    }
+    return title;
   };
 
   const handleDelete = (id: any) => {
@@ -163,15 +177,9 @@ export function TextEditor(props: any) {
                   button
                   id={id}
                   selected={selectedIndex === i}
-                  onClick={(event) => handleGetContent(id, i)}
+                  onClick={event => handleGetContent(id, i)}
                 >
-                  <ListItemText
-                    primary={
-                      localStorage.getItem(id)
-                        ? localStorage.getItem(id)!.substring(0, 20)
-                        : "Untitled"
-                    }
-                  />
+                  <ListItemText primary={getTitle(id)} />
                   <ListItemSecondaryAction>
                     <Tooltip title="Delete">
                       <IconButton
@@ -188,26 +196,7 @@ export function TextEditor(props: any) {
             ))}
           </List>
           <Divider />
-          <footer>
-            <p>
-              © 2021 Developed by{" "}
-              <a
-                href="https://www.bhuvaneswaran.com"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Bhuvaneswaran Balasubramanian
-              </a>{" "}
-              &{" "}
-              <a
-                href="https://github.com/kkheman"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Heman Babu
-              </a>
-            </p>
-          </footer>
+          <Footer />
         </Drawer>
         <main
           className={clsx(classes.content, {
