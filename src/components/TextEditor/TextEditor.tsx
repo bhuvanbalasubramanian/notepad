@@ -25,6 +25,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import MenuIcon from "@material-ui/icons/Menu";
 import { useStyles } from "./constants/";
 import GithubCorner from "react-github-corner";
+import { Footer } from "./Footer";
 
 export function TextEditor(props: any) {
   const classes = useStyles();
@@ -93,13 +94,14 @@ export function TextEditor(props: any) {
     let title = "Untitled";
     if (content) {
       if (content.length >= 20) {
-        title = content.substring(0, 20).concat("...");
+        title = content.substring(0, 25).concat("...");
       } else {
-        title = content.substring(0, 20);
+        title = content.substring(0, 25);
       }
     }
     return title;
   };
+
   const handleDelete = (id: any) => {
     localStorage.removeItem(id);
     let textIds = JSON.parse(localStorage.getItem("TextIds") || "{}");
@@ -174,7 +176,8 @@ export function TextEditor(props: any) {
                 <ListItem
                   button
                   id={id}
-                  onClick={event => handleGetContent(id)}
+                  selected={selectedIndex === i}
+                  onClick={event => handleGetContent(id, i)}
                 >
                   <ListItemText primary={getTitle(id)} />
                   <ListItemSecondaryAction>
@@ -193,26 +196,7 @@ export function TextEditor(props: any) {
             ))}
           </List>
           <Divider />
-          <footer>
-            <p>
-              © 2021 Developed by{" "}
-              <a
-                href="https://www.bhuvaneswaran.com"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Bhuvaneswaran Balasubramanian
-              </a>{" "}
-              &{" "}
-              <a
-                href="https://github.com/kkheman"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Heman Babu
-              </a>
-            </p>
-          </footer>
+          <Footer />
         </Drawer>
         <main
           className={clsx(classes.content, {
