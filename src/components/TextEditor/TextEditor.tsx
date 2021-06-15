@@ -25,7 +25,6 @@ import CloseIcon from "@material-ui/icons/Close";
 import MenuIcon from "@material-ui/icons/Menu";
 import { useStyles } from "./constants/";
 import GithubCorner from "react-github-corner";
-import { getSyntheticTrailingComments } from "typescript";
 
 export function TextEditor(props: any) {
   const classes = useStyles();
@@ -34,6 +33,7 @@ export function TextEditor(props: any) {
   const [textIdArr, setTextIdArr] = useState<string[]>([]);
   const [textContent, setTextContent] = useState("");
   const [textId, setTextId] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     let localKey = localStorage.getItem("TextIds");
@@ -81,8 +81,9 @@ export function TextEditor(props: any) {
     setTextContent(value);
   };
 
-  const handleGetContent = (id: any) => {
+  const handleGetContent = (id: any, index: number) => {
     const content = localStorage.getItem(id)!;
+    setSelectedIndex(index);
     setTextId(id);
     setTextContent(content);
   };
@@ -226,6 +227,7 @@ export function TextEditor(props: any) {
             value={textContent || ""}
             onChange={handleTextContent}
             InputProps={{ disableUnderline: true }}
+            inputRef={input => input && input.focus()}
           />
         </main>
       </div>
