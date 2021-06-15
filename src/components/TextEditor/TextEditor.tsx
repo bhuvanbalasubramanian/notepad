@@ -33,6 +33,7 @@ export function TextEditor(props: any) {
   const [textIdArr, setTextIdArr] = useState<string[]>([]);
   const [textContent, setTextContent] = useState("");
   const [textId, setTextId] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     let localKey = localStorage.getItem("TextIds");
@@ -80,8 +81,9 @@ export function TextEditor(props: any) {
     setTextContent(value);
   };
 
-  const handleGetContent = (id: any) => {
+  const handleGetContent = (id: any, index: number) => {
     const content = localStorage.getItem(id)!;
+    setSelectedIndex(index);
     setTextId(id);
     setTextContent(content);
   };
@@ -160,7 +162,8 @@ export function TextEditor(props: any) {
                 <ListItem
                   button
                   id={id}
-                  onClick={event => handleGetContent(id)}
+                  selected={selectedIndex === i}
+                  onClick={(event) => handleGetContent(id, i)}
                 >
                   <ListItemText
                     primary={
@@ -219,6 +222,7 @@ export function TextEditor(props: any) {
             value={textContent || ""}
             onChange={handleTextContent}
             InputProps={{ disableUnderline: true }}
+            inputRef={input => input && input.focus()}
           />
         </main>
       </div>
