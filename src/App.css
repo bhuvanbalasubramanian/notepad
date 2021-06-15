@@ -82,3 +82,7 @@ footer {
     transform: rotate(360deg);
   }
 }
+
+.MuiList-padding {
+  padding-bottom: 0px !important;
+}
