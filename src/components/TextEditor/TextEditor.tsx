@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import {
   TextField,
@@ -31,6 +31,7 @@ export function TextEditor(props: any) {
   const [textIdArr, setTextIdArr] = useState<string[]>([]);
   const [textContent, setTextContent] = useState("");
   const [textId, setTextId] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     let localKey = localStorage.getItem("TextIds");
@@ -74,14 +75,13 @@ export function TextEditor(props: any) {
 
   const handleTextContent = (event: any) => {
     let value = event?.target.value;
-    console.log("text id, value", textId, value);
     localStorage.setItem(textId, value);
     setTextContent(value);
   };
 
-  const handleGetContent = (id: any) => {
+  const handleGetContent = (id: any, index: number) => {
     const content = localStorage.getItem(id)!;
-    console.log("id, content:", id, content);
+    setSelectedIndex(index);
     setTextId(id);
     setTextContent(content);
   };
@@ -157,14 +157,15 @@ export function TextEditor(props: any) {
           </div>
           <Divider />
           <List>
-            {textIdArr.map((id) => (
+            {textIdArr.map((id, index) => (
               <Fragment>
                 <Divider />
                 <ListItem
                   button
                   key={id}
                   id={id}
-                  onClick={(event) => handleGetContent(id)}
+                  selected={selectedIndex === index}
+                  onClick={(event) => handleGetContent(id, index)}
                 >
                   <ListItemText primary={localStorage.getItem(id)!} />
                   <ListItemSecondaryAction>
@@ -197,6 +198,7 @@ export function TextEditor(props: any) {
             value={textContent || ""}
             onChange={handleTextContent}
             InputProps={{ disableUnderline: true }}
+            inputRef={input => input && input.focus()}
           />
         </main>
       </div>
