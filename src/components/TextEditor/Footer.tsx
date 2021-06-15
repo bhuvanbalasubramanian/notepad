@@ -6,7 +6,7 @@ export function Footer() {
         won't store any data in cloud or database.
       </p>
       <p className="text-center">
-        © 2021 Developed by{" "}
+        © 2021. Developed by{" "}
         <a
           href="https://www.bhuvaneswaran.com"
           target="_blank"
