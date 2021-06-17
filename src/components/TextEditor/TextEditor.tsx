@@ -22,10 +22,12 @@ import AddBoxSharpIcon from "@material-ui/icons/AddBoxSharp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import CloseIcon from "@material-ui/icons/Close";
+import RecordVoiceOverIcon from '@material-ui/icons/RecordVoiceOver';
 import MenuIcon from "@material-ui/icons/Menu";
-import { useStyles } from "./constants/";
 import GithubCorner from "react-github-corner";
 import { Footer } from "./Footer";
+import { useStyles } from "./constants/";
+import { VoiceRecoderModal } from "../VoiceRecorderModal/";
 
 export function TextEditor(props: any) {
   const classes = useStyles();
@@ -35,6 +37,7 @@ export function TextEditor(props: any) {
   const [textContent, setTextContent] = useState("");
   const [textId, setTextId] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     let localKey = localStorage.getItem("TextIds");
@@ -119,8 +122,19 @@ export function TextEditor(props: any) {
     }
   };
 
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+  const handleCloseDialog = (voiceContent : any) => {
+    const content = textContent + voiceContent;
+    localStorage.setItem(textId, content);
+    setTextContent(content);
+    setOpenDialog(false);
+  };
+
   return (
     <Fragment>
+      <VoiceRecoderModal open={openDialog} onClose={handleCloseDialog}/>
       <div className={classes.root}>
         <CssBaseline />
         <AppBar
@@ -146,6 +160,13 @@ export function TextEditor(props: any) {
               <Tooltip title="Add" aria-label="add">
                 <IconButton color="inherit" size="medium" onClick={handleAdd}>
                   <AddBoxSharpIcon />
+                </IconButton>
+              </Tooltip>
+            </div>
+            <div className={classes.drawerHeader}>
+            <Tooltip title="Convert speech to text" aria-label="speech">
+                <IconButton color="inherit" size="medium" onClick={handleOpenDialog} >
+                  <RecordVoiceOverIcon/>
                 </IconButton>
               </Tooltip>
             </div>
@@ -208,6 +229,7 @@ export function TextEditor(props: any) {
             placeholder="Your content.."
             fullWidth
             multiline
+            spellCheck
             value={textContent || ""}
             onChange={handleTextContent}
             InputProps={{ disableUnderline: true }}
