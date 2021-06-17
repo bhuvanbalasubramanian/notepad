@@ -1,3 +1,4 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+Sitemap: https://wordpad.netlify.app/sitemap.xml
+Host: https://wordpad.netlify.app

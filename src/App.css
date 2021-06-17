@@ -59,17 +59,34 @@ body {
 .github-corner svg {
   z-index: 10000;
 }
+
 footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 80px;
+  height: 160px;
   background: #fafafa !important;
-  text-align: center;
   z-index: 10000;
   border-top: 1px solid #ccc;
 }
 
+footer a {
+  text-decoration: none;
+}
+
+.privacy-note {
+  font-size: 13px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: left;
+}
+
+.text-center {
+  font-size: 14px;
+  text-align: center;
+}
 .MuiSvgIcon-fontSizeSmall {
   color: #ccc;
 }
@@ -85,4 +102,7 @@ footer {
 
 .MuiList-padding {
   padding-bottom: 0px !important;
+}
+textarea {
+  letter-spacing: 0.5px !important;
 }
