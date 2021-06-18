@@ -115,6 +115,7 @@ export function TextEditor(props: any) {
     setTextIdArr(filteredAry);
     if (filteredAry.length === 0) {
       const newId = uuidv4();
+      textIdArr.length = 0;
       textIdArr.push(newId);
       localStorage.setItem("TextIds", JSON.stringify([newId]));
       localStorage.setItem(newId, "");
