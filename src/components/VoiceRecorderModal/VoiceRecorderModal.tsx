@@ -17,6 +17,8 @@ import MicIcon from "@material-ui/icons/Mic";
 import StopIcon from "@material-ui/icons/Stop";
 import { Tooltip } from "@material-ui/core";
 import MuiDialogContentText from "@material-ui/core/DialogContentText";
+import Snackbar from "@material-ui/core/Snackbar";
+
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -66,7 +68,6 @@ export interface DialogTitleProps extends WithStyles<typeof styles> {
 }
 
 const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
-
   const { children, classes, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
@@ -111,6 +112,7 @@ const DialogActions = withStyles((theme: Theme) => ({
 
 export function VoiceRecoderModal(props: any) {
   const [open, setOpen] = useState(false);
+  const [openSnackBar, setOpenSnackBar] = useState(false);
   // const [isListening, setIsListening] = useState(false);
   const { transcript, resetTranscript } = useSpeechRecognition();
   const [listeningText, setListeningText] = useState("");
@@ -129,7 +131,8 @@ export function VoiceRecoderModal(props: any) {
   const handleVoiceToText = () => {
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
       // Browser not supported & return some useful info.
-      alert("Browser not supported");
+      // alert("Browser not supported");
+      setOpenSnackBar(true);
       return;
     }
     // setIsListening(true);
@@ -138,26 +141,58 @@ export function VoiceRecoderModal(props: any) {
       continuous: true,
     });
     setListeningText("Recording ... ");
-    console.log("result: ", transcript);
   };
 
   const handleVoiceStop = () => {
     // setIsListening(false);
     SpeechRecognition.stopListening();
-    console.log("result stop: ", transcript);
     setListeningText("Press mic button to start recording");
     // resetTranscript();
   };
 
+  const handleCloseSnackBar = (
+    event: React.SyntheticEvent | React.MouseEvent,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackBar(false);
+  };
+
   return (
     <div>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        open={openSnackBar}
+        autoHideDuration={2500}
+        onClose={handleCloseSnackBar}
+        message="Browser not supported"
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleCloseSnackBar}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      />
+
       <Dialog
         onClose={handleClose}
         aria-labelledby="voice-recorder-dialog"
         open={open}
       >
         <DialogTitle id="voice-recorder-dialog-title" onClose={handleClose}>
-          Convert your speech to text
+          <Typography variant="h6">Convert your speech to text</Typography>
+          <Typography variant="caption">
+            * Only Chrome and Edge browsers are supported.
+          </Typography>
         </DialogTitle>
         <DialogContent>
           <div>
