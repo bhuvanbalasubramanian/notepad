@@ -134,7 +134,6 @@ export function VoiceRecoderModal(props: any) {
   const handleVoiceToText = () => {
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
       // Browser not supported & return some useful info.
-      // alert("Browser not supported");
       setOpenSnackBar(true);
       return;
     }
