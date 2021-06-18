@@ -16,18 +16,20 @@ import {
   ListItemSecondaryAction
 } from "@material-ui/core";
 import clsx from "clsx";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 import { useTheme } from "@material-ui/core/styles";
 import AddBoxSharpIcon from "@material-ui/icons/AddBoxSharp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import CloseIcon from "@material-ui/icons/Close";
-import RecordVoiceOverIcon from '@material-ui/icons/RecordVoiceOver';
+import RecordVoiceOverIcon from "@material-ui/icons/RecordVoiceOver";
 import MenuIcon from "@material-ui/icons/Menu";
 import GithubCorner from "react-github-corner";
 import { Footer } from "./Footer";
 import { useStyles } from "./constants/";
 import { VoiceRecoderModal } from "../VoiceRecorderModal/";
+import { saveAs } from "file-saver";
 
 export function TextEditor(props: any) {
   const classes = useStyles();
@@ -125,16 +127,21 @@ export function TextEditor(props: any) {
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };
-  const handleCloseDialog = (voiceContent : any) => {
+  const handleCloseDialog = (voiceContent: any) => {
     const content = textContent + voiceContent;
     localStorage.setItem(textId, content);
     setTextContent(content);
     setOpenDialog(false);
   };
 
+  const handleExportTxt = () => {
+    const content = localStorage.getItem(textId)!;
+    const data = new Blob([content], { type: "text/plain" });
+    saveAs(data, "WordPadExport.txt");
+  };
   return (
     <Fragment>
-      <VoiceRecoderModal open={openDialog} onClose={handleCloseDialog}/>
+      <VoiceRecoderModal open={openDialog} onClose={handleCloseDialog} />
       <div className={classes.root}>
         <CssBaseline />
         <AppBar
@@ -164,9 +171,25 @@ export function TextEditor(props: any) {
               </Tooltip>
             </div>
             <div className={classes.drawerHeader}>
-            <Tooltip title="Convert speech to text" aria-label="speech">
-                <IconButton color="inherit" size="medium" onClick={handleOpenDialog} >
-                  <RecordVoiceOverIcon/>
+              <Tooltip title="Convert speech to text" aria-label="speech">
+                <IconButton
+                  color="inherit"
+                  size="medium"
+                  onClick={handleOpenDialog}
+                >
+                  <RecordVoiceOverIcon />
+                </IconButton>
+              </Tooltip>
+            </div>
+
+            <div className={classes.drawerHeader}>
+              <Tooltip title="Export to .txt file" aria-label="export">
+                <IconButton
+                  color="inherit"
+                  size="medium"
+                  onClick={handleExportTxt}
+                >
+                  <GetAppIcon />
                 </IconButton>
               </Tooltip>
             </div>
