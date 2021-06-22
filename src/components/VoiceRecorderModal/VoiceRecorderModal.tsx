@@ -3,7 +3,7 @@ import {
   createStyles,
   Theme,
   withStyles,
-  WithStyles,
+  WithStyles
 } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -20,45 +20,21 @@ import MuiDialogContentText from "@material-ui/core/DialogContentText";
 import Snackbar from "@material-ui/core/Snackbar";
 
 import SpeechRecognition, {
-  useSpeechRecognition,
+  useSpeechRecognition
 } from "react-speech-recognition";
 
-/* export const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    micDiv: {
-      // border: "5px solid $primary",
-      borderRadius: "50%",
-      color: "red",
-      border: "1px solid #FF3D7F",
-      animationName: "$pulsate",
-      animationIterationCount: "infinite",
-      animationDuration: "1.5s",
-      // animation: "$pulsate infinite 1.5s",
-    },
-    "keyframes pulsate": {
-      "0%": {
-        transform: "scale(1, 1)",
-        opacity: 1,
-      },
-      "100%": {
-        transform: "scale(1.3, 1.3)",
-        opacity: 0,
-      },
-    },
-  })
-); */
 const styles = (theme: Theme) =>
   createStyles({
     root: {
       margin: 0,
-      padding: theme.spacing(5),
+      padding: theme.spacing(5)
     },
     closeButton: {
       position: "absolute",
       right: theme.spacing(1),
       top: theme.spacing(1),
-      color: theme.palette.grey[500],
-    },
+      color: theme.palette.grey[500]
+    }
   });
 
 export interface DialogTitleProps extends WithStyles<typeof styles> {
@@ -90,8 +66,8 @@ const DialogContent = withStyles((theme: Theme) => ({
     padding: theme.spacing(2),
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-  },
+    justifyContent: "center"
+  }
 }))(MuiDialogContent);
 
 const DialogContentText = withStyles((theme: Theme) => ({
@@ -99,26 +75,23 @@ const DialogContentText = withStyles((theme: Theme) => ({
     padding: theme.spacing(2),
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-  },
+    justifyContent: "center"
+  }
 }))(MuiDialogContentText);
 
 const DialogActions = withStyles((theme: Theme) => ({
   root: {
     margin: 0,
-    padding: theme.spacing(1),
-  },
+    padding: theme.spacing(1)
+  }
 }))(MuiDialogActions);
 
 export function VoiceRecoderModal(props: any) {
   const [open, setOpen] = useState(false);
   const [openSnackBar, setOpenSnackBar] = useState(false);
-  // const [isListening, setIsListening] = useState(false);
   const { transcript, resetTranscript } = useSpeechRecognition();
   const [listeningText, setListeningText] = useState("");
   const [voiceResultText, setVoiceResultText] = useState("");
-  /* const theme = useTheme();
-  const classes = useStyles(theme); */
 
   const handleClose = () => {
     setListeningText("Press mic button to start recording");
@@ -133,14 +106,12 @@ export function VoiceRecoderModal(props: any) {
 
   const handleVoiceToText = () => {
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-      // Browser not supported & return some useful info.
       setOpenSnackBar(true);
       return;
     }
-    // setIsListening(true);
     resetTranscript();
     SpeechRecognition.startListening({
-      continuous: true,
+      continuous: true
     });
     setListeningText("Recording ... ");
   };
@@ -148,7 +119,9 @@ export function VoiceRecoderModal(props: any) {
   const handleVoiceStop = () => {
     SpeechRecognition.stopListening();
     setListeningText("");
-    setVoiceResultText("Voice recorded. Kindly close the dialog to upate the text in the editor");
+    setVoiceResultText(
+      "Voice recorded. Kindly close the dialog to upate the text in the editor"
+    );
   };
 
   const handleCloseSnackBar = (
@@ -166,7 +139,7 @@ export function VoiceRecoderModal(props: any) {
       <Snackbar
         anchorOrigin={{
           vertical: "top",
-          horizontal: "right",
+          horizontal: "right"
         }}
         open={openSnackBar}
         autoHideDuration={2500}
@@ -219,7 +192,10 @@ export function VoiceRecoderModal(props: any) {
             </Tooltip>
           </div>
         </DialogContent>
-        <DialogContentText>{listeningText}{voiceResultText}</DialogContentText>
+        <DialogContentText>
+          {listeningText}
+          {voiceResultText}
+        </DialogContentText>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">
             Close
