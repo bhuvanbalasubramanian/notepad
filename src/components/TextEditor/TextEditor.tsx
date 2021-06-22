@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import GetAppIcon from "@material-ui/icons/GetApp";
-
+import Hidden from "@material-ui/core/Hidden";
 import { useTheme } from "@material-ui/core/styles";
 import AddBoxSharpIcon from "@material-ui/icons/AddBoxSharp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -40,6 +40,11 @@ export function TextEditor(props: any) {
   const [textId, setTextId] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   useEffect(() => {
     let localKey = localStorage.getItem("TextIds");
@@ -145,104 +150,203 @@ export function TextEditor(props: any) {
       <VoiceRecoderModal open={openDialog} onClose={handleCloseDialog} />
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={clsx(classes.appBar, {
-            [classes.appBarShift]: open
-          })}
-        >
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              className={clsx(classes.menuButton, open && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap>
-              WordPad
-            </Typography>
-            <div className={classes.drawerHeader}>
-              <Tooltip title="Add" aria-label="add">
-                <IconButton color="inherit" size="medium" onClick={handleAdd}>
-                  <AddBoxSharpIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
-            <div className={classes.drawerHeader}>
-              <Tooltip title="Convert speech to text" aria-label="speech">
-                <IconButton
-                  color="inherit"
-                  size="medium"
-                  onClick={handleOpenDialog}
-                >
-                  <RecordVoiceOverIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
-
-            <div className={classes.drawerHeader}>
-              <Tooltip title="Export to .txt file" aria-label="export">
-                <IconButton
-                  color="inherit"
-                  size="medium"
-                  onClick={handleExportTxt}
-                >
-                  <GetAppIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          className={classes.drawer}
-          variant="persistent"
-          anchor="left"
-          open={open}
-          classes={{
-            paper: classes.drawerPaper
-          }}
-        >
-          <div className={classes.drawerHeader}>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "ltr" ? (
-                <ChevronLeftIcon />
-              ) : (
-                <ChevronRightIcon />
-              )}
-            </IconButton>
-          </div>
-          <List>
-            {textIdArr.map((id, i) => (
-              <div key={i}>
-                <Divider />
-                <ListItem
-                  button
-                  id={id}
-                  selected={selectedIndex === i}
-                  onClick={event => handleGetContent(id, i)}
-                >
-                  <ListItemText primary={getTitle(id)} />
-                  <ListItemSecondaryAction>
-                    <Tooltip title="Delete">
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        onClick={event => handleDelete(id)}
-                      >
-                        <CloseIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                  </ListItemSecondaryAction>
-                </ListItem>
+        <Hidden smUp implementation="css">
+          <AppBar position="fixed" className={classes.appBar}>
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerToggle}
+                edge="start"
+                className={classes.menuButton}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" noWrap>
+                WordPad
+              </Typography>
+              <div className={classes.drawerHeader}>
+                <Tooltip title="Add" aria-label="add">
+                  <IconButton color="inherit" size="medium" onClick={handleAdd}>
+                    <AddBoxSharpIcon />
+                  </IconButton>
+                </Tooltip>
               </div>
-            ))}
-          </List>
-          <Divider />
-          <Footer />
-        </Drawer>
+              <div className={classes.drawerHeader}>
+                <Tooltip title="Convert speech to text" aria-label="speech">
+                  <IconButton
+                    color="inherit"
+                    size="medium"
+                    onClick={handleOpenDialog}
+                  >
+                    <RecordVoiceOverIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+
+              <div className={classes.drawerHeader}>
+                <Tooltip title="Export to .txt file" aria-label="export">
+                  <IconButton
+                    color="inherit"
+                    size="medium"
+                    onClick={handleExportTxt}
+                  >
+                    <GetAppIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            className={classes.drawer}
+            variant="temporary"
+            anchor="left"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            classes={{
+              paper: classes.drawerPaper
+            }}
+          >
+            <div className={classes.drawerHeader}>
+              <IconButton onClick={handleDrawerToggle}>
+                {theme.direction === "ltr" ? (
+                  <ChevronLeftIcon />
+                ) : (
+                  <ChevronRightIcon />
+                )}
+              </IconButton>
+            </div>
+            <List>
+              {textIdArr.map((id, i) => (
+                <div key={i}>
+                  <Divider />
+                  <ListItem
+                    button
+                    id={id}
+                    selected={selectedIndex === i}
+                    onClick={event => handleGetContent(id, i)}
+                  >
+                    <ListItemText primary={getTitle(id)} />
+                    <ListItemSecondaryAction>
+                      <Tooltip title="Delete">
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          onClick={event => handleDelete(id)}
+                        >
+                          <CloseIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </div>
+              ))}
+            </List>
+            <Divider />
+            <Footer />
+          </Drawer>
+        </Hidden>
+
+        <Hidden xsDown implementation="css">
+          <AppBar
+            position="fixed"
+            className={clsx(classes.appBar, {
+              [classes.appBarShift]: open
+            })}
+          >
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                className={clsx(classes.menuButton, open && classes.hide)}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" noWrap>
+                WordPad
+              </Typography>
+              <div className={classes.drawerHeader}>
+                <Tooltip title="Add" aria-label="add">
+                  <IconButton color="inherit" size="medium" onClick={handleAdd}>
+                    <AddBoxSharpIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+              <div className={classes.drawerHeader}>
+                <Tooltip title="Convert speech to text" aria-label="speech">
+                  <IconButton
+                    color="inherit"
+                    size="medium"
+                    onClick={handleOpenDialog}
+                  >
+                    <RecordVoiceOverIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+
+              <div className={classes.drawerHeader}>
+                <Tooltip title="Export to .txt file" aria-label="export">
+                  <IconButton
+                    color="inherit"
+                    size="medium"
+                    onClick={handleExportTxt}
+                  >
+                    <GetAppIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            className={classes.drawer}
+            variant="persistent"
+            anchor="left"
+            open={open}
+            classes={{
+              paper: classes.drawerPaper
+            }}
+          >
+            <div className={classes.drawerHeader}>
+              <IconButton onClick={handleDrawerClose}>
+                {theme.direction === "ltr" ? (
+                  <ChevronLeftIcon />
+                ) : (
+                  <ChevronRightIcon />
+                )}
+              </IconButton>
+            </div>
+            <List>
+              {textIdArr.map((id, i) => (
+                <div key={i}>
+                  <Divider />
+                  <ListItem
+                    button
+                    id={id}
+                    selected={selectedIndex === i}
+                    onClick={event => handleGetContent(id, i)}
+                  >
+                    <ListItemText primary={getTitle(id)} />
+                    <ListItemSecondaryAction>
+                      <Tooltip title="Delete">
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          onClick={event => handleDelete(id)}
+                        >
+                          <CloseIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </div>
+              ))}
+            </List>
+            <Divider />
+            <Footer />
+          </Drawer>
+        </Hidden>
         <main
           className={clsx(classes.content, {
             [classes.contentShift]: open
