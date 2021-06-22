@@ -116,22 +116,24 @@ export function VoiceRecoderModal(props: any) {
   // const [isListening, setIsListening] = useState(false);
   const { transcript, resetTranscript } = useSpeechRecognition();
   const [listeningText, setListeningText] = useState("");
+  const [voiceResultText, setVoiceResultText] = useState("");
   /* const theme = useTheme();
   const classes = useStyles(theme); */
 
   const handleClose = () => {
+    setListeningText("Press mic button to start recording");
     props.onClose(transcript);
     resetTranscript();
   };
   useEffect(() => {
     setOpen(props.open);
     setListeningText("Press mic button to start recording");
+    setVoiceResultText("");
   }, [props.open]);
 
   const handleVoiceToText = () => {
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
       // Browser not supported & return some useful info.
-      // alert("Browser not supported");
       setOpenSnackBar(true);
       return;
     }
@@ -144,10 +146,9 @@ export function VoiceRecoderModal(props: any) {
   };
 
   const handleVoiceStop = () => {
-    // setIsListening(false);
     SpeechRecognition.stopListening();
-    setListeningText("Press mic button to start recording");
-    // resetTranscript();
+    setListeningText("");
+    setVoiceResultText("Voice recorded. Kindly close the dialog to upate the text in the editor");
   };
 
   const handleCloseSnackBar = (
@@ -218,7 +219,7 @@ export function VoiceRecoderModal(props: any) {
             </Tooltip>
           </div>
         </DialogContent>
-        <DialogContentText>{listeningText}</DialogContentText>
+        <DialogContentText>{listeningText}{voiceResultText}</DialogContentText>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">
             Close
